@@ -1,0 +1,12 @@
+00:22:12 program   EZ390 START USING z390 V1.7.07 ON J2SE 17.0.1 12/02/22
+EZ390I Copyright 2011 Automated Software Tools Corporation
+EZ390I z390 is licensed under GNU General Public License
+EZ390I program = X:\Documents\projects\ibmasm\20221201\program.390
+EZ390I options = TEST
+
+
+
+EZ390E error 109 quitting test mode
+EZ390I instructions/sec     = 0
+EZ390I total errors         = 1
+00:34:11 program   EZ390 ENDED   RC=16 SEC=719 MEM(MB)= 21 IO=54 INS=62

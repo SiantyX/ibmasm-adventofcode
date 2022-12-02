@@ -1,0 +1,5 @@
+23:27:57 program   EZ390 START USING z390 V1.7.07 ON J2SE 17.0.1 12/02/22
+test enter command or h for help
+test cmd: q
+EZ390E error 109 quitting test mode
+23:27:58 program   EZ390 ENDED   RC=16 SEC= 1 MEM(MB)= 18 IO=25

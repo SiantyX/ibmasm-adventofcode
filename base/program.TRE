@@ -1,0 +1,107 @@
+00:22:12 program   EZ390 START USING z390 V1.7.07 ON J2SE 17.0.1 12/02/22
+test enter command or h for help
+test cmd: l
+ R0-R3 F4F4F4F4800FFDB0 F4F4F4F400002300 F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4
+ R4-R7 F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4
+ R8-RB F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4 F4F4F4F4F4F4F4F4
+ RC-RF F4F4F4F4F4F4F4F4 F4F4F4F400002100 F4F4F4F400002018 F4F4F4F4800FFDB0
+ 800FFDB0 0 90ECD00C     STM   RE=00002018 RC=F4F4F4F4 S2(0000210C)=00000000
+test cmd: A *+62.
+ 000FFE12 *D20EC1FC 100045E0 C074A7F4 FFF6A7F4* *K.AÜ..á\{Èx46x4*
+test cmd: g
+test break on A *+62.
+ 800FFE12 0 D20EC1FC1000 MVC   S1(000FFFAC)=404040404040404040404040404040 S2(000FFD38)=00090000F2F2F2F4F3F5F5F5F5F5F5='...22243555555'
+test cmd: R 1
+R1=F4F4F4F4000FFD38
+test cmd: h
+z390 test command help summary (Visit www.z390.org for more information)
+  addr=sdt    set memory value  (ie 1r?=x'80' changes mem at (r1) 31 bit
+  reg=sdt     set register value (ie 15r=8 changes reg 15 to 8)
+  A addr      add/remove address stop (ie A FF348. or A *+4 etc.)
+  AR nn       display specified access register else all AR0-AR15
+  B=addr      set base for rel addr (ie B=15r% sets base to (r15) 24 bit
+  D           display DCB file status, DDNAME, and DSNAME information
+  E           toggle EBCDIC/ASCII mode for dumping storage etc.
+  F nn        display specified floating point registers else all F0-FF
+  G nn/adr/op exec n instr. or to hex addr or until next break without trace
+  J addr      jump to new addr and trace instruction
+  L reg       list contents of register (ie l 1r dumps register 1
+  L addr len  list contents of memory area (ie l 10. 4 dumps cvt addr
+  M           display memory total allocated and free
+  P           display program information from CDE
+  PSW         display current PSW
+  PSW+        display current PSW in verbose mode
+  PSW16       display 16 byte current PSW
+  R nn        display specified general purpose register else all R0-RF
+  S           clear all breaks
+  S reg??sdt  set break on register change
+  S addr??sdt set break on memory change
+  T nn/adr/op exec n instr. or to hex addr or until next break with trace
+  V op1 = op2 validate memory content against literal
+        op1:  addr len | reg[.+offset] [length]
+        op1:  psw.[cc | mask | amode | key | addr]
+        op2:  addr len | reg[.+offset] [length] | sdt
+  Z or Q      Z to zoom to normal end or Q to quit now
+  .           Z returns retcode from prior V commands, or 0
+  .             0: = all ok, 4: some failed, 8: some syntax failed
+* addr = [hex.|*|dec|nnr%(24)|nnr?(31)][+-addr]
+* reg  = nnr where nn = 0-15
+* sdt  = self defining term (b'01',c'ab',f'1',h'2',x'ff')
+* ??   = break compare operator (=,!=,<,<=,>,>=)
+test cmd: L FFD38. 10
+ 000FFD38 *00090000 F2F2F2F4 F3F5             * *...222435      *
+test cmd: g
+
+test break on A *+62.
+ 800FFE12 0 D20EC1FC1000 MVC   S1(000FFFAC)=404040404040404040404040404040 S2(000FFD38)=00090000F1F1F8F9F9F5F5F5F5F5F5='...11899555555'
+test cmd: g
+
+test break on A *+62.
+ 800FFE12 0 D20EC1FC1000 MVC   S1(000FFFAC)=404040404040404040404040404040 S2(000FFD38)=0005000040F1F8F9F9F5F5F5F5F5F5='.... 1899555555'
+test cmd: L R1
+test error invalid integer - R
+test error invalid integer - R
+test error invalid address
+test cmd: L 1
+ 00000001 *00000000 00000000 00000000 00000000* *................*
+ 00000011 *00200000 00000000 00000000 00000000* *...............*
+test cmd: L 1r
+R1=F4F4F4F4000FFD38
+test cmd: L L 1r 10
+test error invalid integer - L
+test error invalid integer - L
+test error invalid address
+test cmd: l 1r 10
+ 00000001 *00000000 00000000 0000             * *..........      *
+test cmd: l 1r
+R1=F4F4F4F4000FFD38
+test cmd: l 1r 10
+ 00000001 *00000000 00000000 0000             * *..........      *
+test cmd: L 1r?
+ 000FFD38 *00050000 40F1F8F9 F9F5F5F5 F5F5F5F5* *.... 18995555555*
+ 000FFD48 *F5F5F5F5 F5F5F5F5 F5F5F5F5 F5F5F5F5* *5555555555555555*
+test cmd: L 1r? 10
+ 000FFD38 *00050000 40F1F8F9 F9F5             * *.... 18995      *
+test cmd: L 1r? 4
+ 000FFD38 *00050000                           * *....            *
+test cmd: T
+ 800FFE12 0 D20EC1FC1000 MVC   S1(000FFFAC)=404040404040404040404040404040 S2(000FFD38)=0005000040F1F8F9F9F5F5F5F5F5F5='.... 1899555555'
+ 800FFE18 0 45E0C074     BAL   RE=800FFE1C S2(000FFE24)=4110C1F8 LA   
+ 800FFE24 0 4110C1F8     LA    R1=000FFD38 S2(000FFFA8)
+ 800FFE28 0 0A23         SVC   I1=23 WTO R1=ADDR(AL2(LEN),AL2(FLAGS),C'MSG')
+
+ 800FFE2A 0 4110C0F8     LA    R1=000FFFA8 S2(000FFEA8)
+ 800FFE2E 0 4100C1FC     LA    R0=000FFD38 S2(000FFFAC)
+ 800FFE32 0 0A98         SVC   I1=98 PUT R0=REC ADDR FOR PM, R1=DCB/BUFF FOR PL
+ 800FFE34 0 9240C1FC     MVI   S2(000FFFAC)=00 I2=40=' '
+ 800FFE38 0 D24EC1FDC1FC MVC   S1(000FFFAD)=05000040F1F8F9F9F5F5F5F5F5F54040 S2(000FFFAC)=4005000040F1F8F9F9F5F5F5F5F5F540=' ... 1899555555 '
+ 800FFE3E 0 07FE         BR    RE(800FFE1C)=A7F4FFF6 BRU  
+ 800FFE1C 0 A7F4FFF6     BRU   S2(000FFE08)=4110C090 LA   
+ 800FFE08 0 4110C090     LA    R1=000FFEA8 S2(000FFE40)
+ 800FFE0C 0 58010058     L     R0=000FFFAC S2(000FFE98)=000FFD38
+ 800FFE10 0 0A97         SVC   I1=97 GET R0=REC ADDR FOR GM, R1=DCB/BUFF FOR GL
+test break on A *+62.
+ 800FFE12 0 D20EC1FC1000 MVC   S1(000FFFAC)=404040404040404040404040404040 S2(000FFD38)=00080000F1F6F9F6F9F5F5F5F5F5F5='...16969555555'
+test cmd: q
+EZ390E error 109 quitting test mode
+00:34:11 program   EZ390 ENDED   RC=16 SEC=719 MEM(MB)= 21 IO=54 INS=62

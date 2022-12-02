@@ -1,0 +1,10 @@
+00:49:12 program   LZ390 START USING z390 V1.7.07 ON J2SE 17.0.1 12/03/22
+LZ390I Copyright 2011 Automated Software Tools Corporation
+LZ390I z390 is licensed under GNU General Public License
+LZ390I options = AMODE24 DUMP
+LZ390I program = X:\Documents\projects\ibmasm\20221202\program.OBJ
+LZ390I ESD=PROGRAM  LOC=00000000 LEN=000002E8
+LZ390I INCLUDE = X:\Documents\projects\ibmasm\20221202\program.OBJ
+LZ390I RLD LOC=00000170 FLD=0000011C EXT=00000000
+LZ390I total errors         = 0
+00:49:12 program   LZ390 ENDED   RC= 0 SEC= 0 MEM(MB)= 10 IO=161
